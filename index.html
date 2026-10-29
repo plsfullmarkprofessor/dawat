@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E4D4A">
+<meta name="description" content="DAWAT — Dubai's neighbourhood souq for surplus food. Nothing hits like home.">
+<title>DAWAT</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230E4D4A'/%3E%3Cpath d='M14 38c6 8 30 8 36 0' stroke='%23E8A33D' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M32 12c8 6 10 14 0 22c-10-8-8-16 0-22z' fill='%23F6F1E7'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0E4D4A;--teal-dk:#08322F;--saffron:#E8A33D;--cream:#F6F1E7;--card:#FFFDF8;--sand:#F1E6D2;
+  --border:#E2D8C6;--dashed:#CDBFA6;--ink:#1C1B19;--muted:#5C574E;--muted2:#6E685D;--mint:#CFE3DF;--alert:#C9561E;
+  --top:38px;--bottom:22px;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:#E4DBCB;display:flex;align-items:center;justify-content:center;overflow:hidden}
+button{font-family:inherit;cursor:pointer;color:inherit}
+input,textarea{font-family:inherit}
+a{color:var(--teal)}
+#phone{width:390px;height:844px;position:relative;overflow:hidden;background:var(--cream);border-radius:46px;box-shadow:0 0 0 10px #1C1B19,0 40px 90px rgba(14,77,74,.35);transform-origin:center;flex:none}
+#app{position:absolute;inset:0}
+@media (max-width:520px){
+  body{display:block;background:var(--cream)}
+  #phone{width:100%;height:100%;border-radius:0;box-shadow:none;transform:none!important}
+  :root{--top:calc(12px + env(safe-area-inset-top, 0px));--bottom:calc(14px + env(safe-area-inset-bottom, 0px))}
+  /* when hosted, the page root already carries the safe-area padding */
+  :root.hosted{--top:12px;--bottom:14px}
+}
+
+/* animations */
+@keyframes bk-spin{0%{transform:rotate(-180deg) scale(.4);opacity:0}45%{opacity:1}70%{transform:rotate(20deg) scale(1.08)}100%{transform:rotate(0) scale(1)}}
+@keyframes bk-word{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:none}}
+@keyframes bk-out{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.12)}}
+@keyframes bk-in{0%{opacity:0;transform:translateY(18px)}100%{opacity:1;transform:none}}
+@keyframes bk-slide{0%{opacity:0;transform:translateX(60px)}100%{opacity:1;transform:none}}
+@keyframes bk-back{0%{opacity:0;transform:translateX(-40px)}100%{opacity:1;transform:none}}
+@keyframes bk-pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,163,61,.55)}50%{box-shadow:0 0 0 10px rgba(232,163,61,0)}}
+@keyframes bk-toast{0%{opacity:0;transform:translate(-50%,16px)}100%{opacity:1;transform:translate(-50%,0)}}
+@keyframes bk-bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes bk-sheet{0%{transform:translateY(100%)}100%{transform:none}}
+@keyframes bk-fade{0%{opacity:0}100%{opacity:1}}
+.bk-logo{animation:bk-spin 1.4s cubic-bezier(.2,.8,.2,1) both}
+.bk-word{animation:bk-word .6s ease-out 1s both}
+.bk-tag{animation:bk-word .6s ease-out 1.25s both}
+.bk-splash-out{animation:bk-out .55s ease-in both}
+.a-in{animation:bk-in .6s cubic-bezier(.2,.8,.2,1) both}
+.a-fwd{animation:bk-slide .45s cubic-bezier(.2,.8,.2,1) both}
+.a-back{animation:bk-back .45s cubic-bezier(.2,.8,.2,1) both}
+.bk-pulse{animation:bk-pulse 2.2s ease-in-out infinite}
+.bk-bump{animation:bk-bump .5s ease-out}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* layout */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--cream)}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar,.hscroll::-webkit-scrollbar{display:none}
+.hscroll{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.col{display:flex;flex-direction:column}
+.row{display:flex;align-items:center}
+.topbar{flex:none;display:flex;align-items:center;gap:8px;padding:var(--top) 16px 12px 12px;border-bottom:1px solid var(--border);background:var(--cream)}
+.bottombar{flex:none;padding:12px 20px var(--bottom);background:var(--card);border-top:1px solid var(--border)}
+
+/* type */
+.display{font-family:var(--display);font-weight:700;letter-spacing:-.3px}
+.t20{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.3px}
+.sub{font-size:12px;color:var(--muted2)}
+.lbl{font-size:13px;font-weight:600;color:#3D3A34}
+h1,h2,h3{margin:0}
+h2.sec{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.3px}
+h2.small{font-size:16px;font-weight:700}
+
+/* controls */
+.iconbtn{width:44px;height:44px;border-radius:22px;border:0;background:none;display:flex;align-items:center;justify-content:center;flex:none;position:relative}
+.pill{height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink);position:relative}
+.field{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 14px;border-radius:14px;background:var(--card);border:1px solid var(--border)}
+.field:focus-within{border-color:var(--teal)}
+.field input,.field textarea{flex:1;width:100%;min-width:0;border:0;outline:none;background:transparent;font-size:15px;color:var(--ink)}
+.field textarea{resize:none;line-height:1.45;padding:12px 0}
+input[type=search]::-webkit-search-cancel-button{display:none}
+.chip{flex:none;height:44px;padding:0 16px;border-radius:22px;font-size:14px;font-weight:600;white-space:nowrap;background:var(--card);color:var(--ink);border:1px solid var(--border)}
+.chip.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.chip:hover,.hov:hover{filter:brightness(.97)}
+.btn{height:56px;width:100%;border-radius:28px;border:0;background:var(--teal);color:var(--card);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn:hover{background:var(--teal-dk)}
+.btn-sm{height:44px;padding:0 16px;border-radius:22px;border:0;background:var(--teal);color:var(--card);font-size:13.5px;font-weight:700;flex:none}
+.btn-ghost{height:44px;padding:0 16px;border-radius:22px;border:1px solid var(--border);background:var(--card);color:var(--ink);font-size:13.5px;font-weight:700;flex:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.dot{position:absolute;width:9px;height:9px;border-radius:5px;background:var(--alert);border:2px solid var(--card)}
+
+/* pieces */
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px}
+.ad{border-radius:14px;border:1.5px dashed var(--dashed);background:#FBF7EF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#8A8273;letter-spacing:.5px}
+.adlbl{font-size:12px;font-weight:600;color:var(--muted2)}
+.timer{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;background:var(--sand);font-size:11px;font-weight:700;color:#3D3A34;font-variant-numeric:tabular-nums}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:10px;font-size:11.5px;font-weight:700}
+.thumb{flex:none;border-radius:14px;display:flex;align-items:center;justify-content:center;background-position:center;background-size:cover;background-repeat:no-repeat}
+.ticket{position:relative;display:flex;gap:12px;padding:12px;border-radius:20px;background:var(--card);border:1px solid var(--border);cursor:pointer;text-align:left}
+.ticket:hover{border-color:var(--dashed)}
+.ticket:focus-visible,button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* nav */
+.nav{flex:none;height:calc(70px + var(--bottom));background:var(--card);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;padding:0 8px var(--bottom)}
+.tab{height:56px;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:500;color:var(--muted2);position:relative}
+.tab.on{font-weight:700;color:var(--teal)}
+.tab .dot{top:8px;left:calc(50% + 6px)}
+.navsell{width:56px;height:56px;margin:-26px auto 0;border-radius:28px;border:4px solid var(--cream);background:var(--saffron);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(14,77,74,.25)}
+
+/* toast + sheet */
+.toast{position:absolute;left:50%;bottom:100px;width:calc(100% - 40px);max-width:350px;padding:14px 16px;border-radius:16px;background:var(--ink);color:var(--card);font-size:13.5px;line-height:1.4;display:flex;gap:10px;align-items:center;z-index:20;animation:bk-toast .35s ease-out both;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast button{flex:none;min-width:44px;height:44px;margin:-10px -8px -10px 0;padding:0 8px;border:0;background:none;color:var(--saffron);font-weight:700;font-size:13px}
+.scrim{position:absolute;inset:0;background:rgba(28,27,25,.45);z-index:15;animation:bk-fade .25s ease-out both}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--card);border-radius:24px 24px 0 0;padding:10px 20px calc(var(--bottom) + 8px);z-index:16;animation:bk-sheet .35s cubic-bezier(.2,.8,.2,1) both;display:flex;flex-direction:column;gap:14px}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--border);margin:0 auto 4px}
+
+/* chat */
+.bubble{max-width:78%;padding:10px 14px;font-size:14.5px;line-height:1.4;border-radius:18px;white-space:pre-wrap;overflow-wrap:anywhere}
+.bubble.me{background:var(--teal);color:var(--card);border-bottom-right-radius:6px}
+.bubble.them{background:var(--card);color:var(--ink);border:1px solid var(--border);border-bottom-left-radius:6px}
+.sysmsg{align-self:center;max-width:88%;text-align:center;padding:8px 12px;border-radius:12px;background:var(--sand);font-size:12.5px;line-height:1.4;color:#3D3A34;font-weight:600}
+</style>
+</head>
+<body>
+<div id="phone">
+  <div id="app"></div>
+</div>
+
+<script>
+'use strict';
+
+/* ================================================================
+   DAWAT — standalone web prototype.
+   "Backend" = the `api` object below, persisted to localStorage.
+   Swap its functions for fetch() calls when a real server exists.
+   ================================================================ */
+
+var KEY = 'dawat.v2';
+var INVENTORS_URL = '#'; // TODO: real Inventors URL
+
+var AREAS = ['Dubai Marina', 'Deira', 'Al Barsha', 'JLT', 'Al Quoz', 'Jumeirah', 'Al Nahda', 'Business Bay', 'Mirdif'];
+var CATS = [
+  { id: 'all', label: 'All' },
+  { id: 'fish', label: 'Fresh catch' },
+  { id: 'home', label: 'Home-cooked' },
+  { id: 'pantry', label: 'Pantry & preserves' },
+  { id: 'dates', label: 'Dates & sweets' },
+  { id: 'farm', label: 'Farm produce' }
+];
+var DELIVERIES = [
+  { id: 'pickup', label: 'Buyer picks up', sub: 'From your door or a meeting point', short: 'Pickup' },
+  { id: 'courier', label: 'Courier', sub: 'Same-day delivery across Dubai', short: 'Courier delivery' },
+  { id: 'self', label: 'I deliver', sub: 'You bring it to the buyer', short: 'Seller delivers' }
+];
+
+var I = {
+  plus: 'M12 5v14M5 12h14',
+  back: 'M15 5l-7 7 7 7',
+  arrow: 'M5 12h14M13 6l6 6-6 6',
+  x: 'M6 6l12 12M18 6L6 18',
+  search: 'M11 4a7 7 0 1 0 0 14a7 7 0 0 0 0-14zM20 20l-3.5-3.5',
+  pin: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 7.5a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5z',
+  bell: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0',
+  bag: 'M5 8h14l-1.2 11.1a2 2 0 0 1-2 1.9H8.2a2 2 0 0 1-2-1.9zM9 8V6a3 3 0 0 1 6 0v2',
+  leaf: 'M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 12-4 16-9 16zM4 20c4-4 7-6 11-8',
+  home: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
+  explore: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM15.5 8.5l-2 5-5 2 2-5z',
+  chat: 'M4 5h16v11H8l-4 4z',
+  chatLines: 'M4 5h16v11H8l-4 4zM8 9h8M8 12h5',
+  user: 'M12 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+  clock: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM12 7v5l3 2',
+  photo: 'M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM21 16l-5-5-8 8M9 8.4a1.6 1.6 0 1 0 0 3.2a1.6 1.6 0 0 0 0-3.2z',
+  headset: 'M4 13v-1a8 8 0 0 1 16 0v1M4 13h3v5H5a1 1 0 0 1-1-1zM20 13h-3v5h2a1 1 0 0 0 1-1zM17 18c0 2-2 3-5 3',
+  send: 'M4 12l16-8-6 16-2-7z',
+  exit: 'M10 17l-5-5 5-5M5 12h11M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3',
+  truck: 'M3 6h11v10H3zM14 10h4l3 3v3h-7M7 19a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4a2 2 0 0 0 0 4z',
+  box: 'M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8',
+  check: 'M5 12l5 5 9-10',
+  edit: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+  trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
+  refresh: 'M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7',
+  shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5',
+  people: 'M9 11a3.5 3.5 0 1 0 0-7a3.5 3.5 0 0 0 0 7zM2 20a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14a6 6 0 0 1 4 6',
+  cat: {
+    all: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+    fish: 'M3 12c3-4 8-6 13-3l5-3v12l-5-3c-5 3-10 1-13-3zM8 11.5h.01',
+    home: 'M4 10h16v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM2 10h20M9 6c0-1 1-2 1-3M14 6c0-1 1-2 1-3',
+    pantry: 'M7 3h10v3H7zM6 6h12v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2zM6 11h12',
+    dates: 'M12 3c4 4 6 8 6 11a6 6 0 0 1-12 0c0-3 2-7 6-11z',
+    farm: 'M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 12-4 16-9 16zM4 20c4-4 7-6 11-8'
+  }
+};
+
+function svg(d, size, stroke, sw) {
+  return '<svg width="' + (size || 22) + '" height="' + (size || 22) + '" viewBox="0 0 24 24" fill="none" stroke="' + (stroke || 'currentColor') +
+    '" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"/></svg>';
+}
+function logo(size, inverse) {
+  var bg = inverse ? '#F6F1E7' : '#0E4D4A', fg = inverse ? '#0E4D4A' : '#F6F1E7';
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="' + bg + '"/>' +
+    '<path d="M14 38c6 8 30 8 36 0" stroke="#E8A33D" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+    '<path d="M32 12c8 6 10 14 0 22c-10-8-8-16 0-22z" fill="' + fg + '"/><path d="M32 34v10" stroke="' + fg + '" stroke-width="3" stroke-linecap="round"/></svg>';
+}
+var STAR = 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z';
+function star(on, size) {
+  return '<svg width="' + (size || 14) + '" height="' + (size || 14) + '" viewBox="0 0 24 24" fill="' + (on ? '#E8A33D' : 'none') + '" stroke="' + (on ? '#E8A33D' : '#A39A8A') +
+    '" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="' + STAR + '"/></svg>';
+}
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function fmtElapsed(ms) {
+  var t = Math.max(0, Math.floor(ms / 1000));
+  var h = Math.floor(t / 3600), mi = Math.floor((t % 3600) / 60), se = t % 60;
+  return (h ? h + ':' + pad(mi) : mi) + ':' + pad(se);
+}
+function fmtClock(ts) { var d = new Date(ts); return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+function catLabel(id) { for (var i = 0; i < CATS.length; i++) if (CATS[i].id === id) return CATS[i].label; return ''; }
+function delivery(id) { for (var i = 0; i < DELIVERIES.length; i++) if (DELIVERIES[i].id === id) return DELIVERIES[i]; return DELIVERIES[0]; }
+function initials(name) {
+  var p = String(name || '').trim().split(/\s+/).filter(Boolean);
+  if (!p.length) return 'N';
+  return (p[0][0] + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase();
+}
+function greeting() {
+  var h = new Date().getHours();
+  return h >= 5 && h < 12 ? 'Good morning' : h >= 12 && h < 17 ? 'Good afternoon' : 'Good evening';
+}
+
+/* ---------------- data layer ---------------- */
+
+function emptyDraft() { return { photos: [], title: '', qty: '', price: '', desc: '', cat: '', delivery: 'pickup', tray: false, licensed: false }; }
+
+// Demo data only: example sellers and example ratings, labelled as demo in the UI.
+function seedTickets(now) {
+  var m = 60000;
+  return [
+    { id: 's7', cat: 'home', title: 'Chicken machboos tray', qty: 'Serves 8', tray: true, area: 'Al Nahda', price: 'AED 320 / tray', delivery: 'self', tint: '#F4D9A6', at: now - 38 * m - 12000, desc: 'Slow-cooked with loomi and baharat, rice from the same pot. Order by noon for dinner — great for family gatherings and office lunches.', tags: 'tray family gathering office rice emirati', demo: true, verified: true, taste: 4.9, portion: 4.8, rated: 21 },
+    { id: 's1', cat: 'fish', title: 'Hammour, caught this morning', qty: '4 kg', area: 'Deira', price: 'AED 120', delivery: 'pickup', tint: '#CFE3DF', at: now - 23 * m - 41000, desc: 'Line-caught off Deira before sunrise, on ice since. Gutted on request.', tags: 'gulf fish seafood', demo: true, taste: 4.7, portion: 4.9, rated: 9 },
+    { id: 's8', cat: 'home', title: 'Beshbarmak tray, Kazakh style', qty: 'Serves 10', tray: true, area: 'JLT', price: 'AED 380 / tray', delivery: 'pickup', tint: '#EDE3CF', at: now - 96 * m - 40000, desc: 'Hand-cut noodles, slow-boiled beef and onion broth — the way it is made at home in Almaty. Order a day ahead.', tags: 'tray family central asian meat noodles', demo: true, verified: true, taste: 4.8, portion: 5.0, rated: 14 },
+    { id: 's2', cat: 'home', title: 'Homemade mango pickle', qty: '20 jars', area: 'Al Barsha', price: 'AED 25 / jar', delivery: 'courier', tint: '#F4D9A6', at: now - 134 * m - 12000, desc: 'Family recipe, raw mango in mustard oil. Made a big batch for Diwali and have extra.', tags: 'achar spicy indian jar', demo: true, verified: true, taste: 4.6, portion: 4.5, rated: 17 },
+    { id: 's3', cat: 'dates', title: 'Khalas dates, this season', qty: '15 kg', area: 'Al Quoz', price: 'AED 30 / kg', delivery: 'self', tint: '#E6C9A8', at: now - 340 * m - 5000, desc: 'Soft Khalas from a family farm in Liwa. Packed in 1 kg boxes.', tags: 'tamr sweet', demo: true },
+    { id: 's4', cat: 'pantry', title: 'Canned chickpeas, bulk lot', qty: '48 cans', area: 'JLT', price: 'AED 4 / can', delivery: 'pickup', tint: '#E2D8C6', at: now - 9 * m - 30000, desc: 'Over-ordered for a restaurant. Sealed, best before 2028.', tags: 'tins hummus legumes', demo: true },
+    { id: 's5', cat: 'farm', title: 'Basmati rice, sealed sacks', qty: '6 × 10 kg', area: 'Al Nahda', price: 'AED 55 / sack', delivery: 'self', tint: '#EDE3CF', at: now - 52 * m, desc: 'Extra-long grain, unopened sacks. Moving house, cannot take them.', tags: 'grain staple', demo: true },
+    { id: 's6', cat: 'fish', title: 'Sultan Ibrahim, cleaned', qty: '2.5 kg', area: 'Jumeirah', price: 'AED 65', delivery: 'courier', tint: '#CFE3DF', at: now - 71 * m - 18000, desc: 'Cleaned and scaled, ready to fry. Caught yesterday evening.', tags: 'red mullet seafood', demo: true, taste: 4.5, portion: 4.4, rated: 6 }
+  ];
+}
+
+function freshDB() {
+  var now = Date.now();
+  return {
+    v: 2,
+    profile: { name: '', area: 'Dubai Marina' },
+    tickets: seedTickets(now),
+    deals: 0,
+    threads: [{ id: 'support', kind: 'support', peer: 'DAWAT Support', unread: 0,
+      msgs: [{ me: false, text: 'Hi, welcome to DAWAT! Questions about selling, buying or delivery — just write here.', at: now }] }],
+    draft: emptyDraft()
+  };
+}
+
+function loadDB() {
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { var d = JSON.parse(raw); if (d && d.v === 2) return d; }
+  } catch (e) {}
+  return freshDB();
+}
+var db = loadDB();
+
+function persist() {
+  try { localStorage.setItem(KEY, JSON.stringify(db)); return true; } catch (e) { return false; }
+}
+
+var SELLER_REPLIES = [
+  'Perfect, see you then!',
+  'Great — I will keep it fresh for you.',
+  'Thank you, neighbour. Enjoy it!'
+];
+
+var api = {
+  tickets: function () { return db.tickets.slice().sort(function (a, b) { return b.at - a.at; }); },
+  ticket: function (id) { return db.tickets.find(function (t) { return t.id === id; }); },
+  myTickets: function () { return api.tickets().filter(function (t) { return t.mine; }); },
+  thread: function (id) { return db.threads.find(function (t) { return t.id === id; }); },
+  dealThreads: function () {
+    return db.threads.filter(function (t) { return t.kind === 'deal'; })
+      .sort(function (a, b) { return last(b).at - last(a).at; });
+  },
+  unread: function () { return db.threads.reduce(function (n, t) { return n + (t.unread || 0); }, 0); },
+
+  createTicket: function (d) {
+    var p = d.price.trim();
+    var t = {
+      id: 'u' + Date.now(), cat: d.cat || 'pantry', title: d.title.trim(), qty: d.qty.trim() || (d.tray ? 'Serves 6–10' : '1 lot'),
+      area: db.profile.area, price: /aed/i.test(p) ? p : 'AED ' + p, delivery: d.delivery, tray: !!d.tray,
+      licencePending: d.cat === 'home' && !!d.licensed,
+      photos: d.photos.slice(), tint: '#E2D8C6', at: Date.now(), desc: d.desc.trim(), mine: true
+    };
+    db.tickets.push(t);
+    db.draft = emptyDraft();
+    if (!persist()) {
+      t.photos = t.photos.slice(0, 1); // storage full: keep the cover only
+      if (!persist()) { db.tickets.pop(); return null; }
+    }
+    return t;
+  },
+
+  takeDown: function (id) {
+    db.tickets = db.tickets.filter(function (t) { return t.id !== id; });
+    persist();
+  },
+
+  reserve: function (id) {
+    var t = api.ticket(id);
+    if (!t || t.mine) return null;
+    db.tickets = db.tickets.filter(function (x) { return x.id !== id; });
+    db.deals += 1;
+    var th = {
+      id: 'd' + Date.now(), kind: 'deal', unread: 0, replies: 0,
+      peer: t.demo ? 'Seller (demo)' : 'Seller',
+      rating: { taste: 0, portion: 0 },
+      ticket: { cat: t.cat, tray: !!t.tray, verified: !!t.verified, title: t.title, price: t.price, qty: t.qty, area: t.area, delivery: t.delivery, tint: t.tint, cover: (t.photos || [])[0] || '', demo: !!t.demo },
+      msgs: [{ sys: true, text: 'You reserved “' + t.title + '” · ' + t.price + '. Agree on a time right here.', at: Date.now() }]
+    };
+    db.threads.push(th);
+    persist();
+    var hello = t.delivery === 'courier' ? 'Hi! It’s yours. Send me your address and a good time — I’ll book the courier.'
+      : t.delivery === 'self' ? 'Hi! It’s yours. Where should I bring it, and when works for you?'
+      : 'Hi neighbour! It’s yours. When suits you to pick it up in ' + t.area + '?';
+    setTimeout(function () { api.incoming(th.id, hello); }, 1600);
+    return th;
+  },
+
+  send: function (threadId, text) {
+    var th = api.thread(threadId);
+    if (!th) return;
+    th.msgs.push({ me: true, text: text, at: Date.now() });
+    persist();
+    var reply = th.kind === 'support'
+      ? 'Thanks! A DAWAT team member will reply here shortly.'
+      : SELLER_REPLIES[(th.replies++) % SELLER_REPLIES.length];
+    setTimeout(function () { api.incoming(threadId, reply); }, 1200);
+  },
+
+  incoming: function (threadId, text) {
+    var th = api.thread(threadId);
+    if (!th) return;
+    th.msgs.push({ me: false, text: text, at: Date.now() });
+    var open = ui.screen === 'thread' && ui.threadId === threadId;
+    if (!open) th.unread = (th.unread || 0) + 1;
+    persist();
+    if (!open) flash(th.peer + ': ' + text, 'Open', 'openThread', threadId);
+    else render();
+  },
+
+  markRead: function (threadId) {
+    var th = api.thread(threadId);
+    if (th && th.unread) { th.unread = 0; persist(); }
+  },
+
+  reset: function () { db = freshDB(); persist(); }
+};
+function last(th) { return th.msgs[th.msgs.length - 1]; }
+
+/* ---------------- UI state ---------------- */
+
+var ui = {
+  phase: 'spin', screen: 'home', stack: [], anim: '', bump: false,
+  ticketId: '', threadId: '', q: '', buyCat: 'all', trays: false, homeQ: '', msg: '',
+  toast: null, sheet: '', scrollMem: {}
+};
+
+function go(screen, opts) {
+  opts = opts || {};
+  if (opts.replace) { /* keep stack */ }
+  else if (screen === 'home') ui.stack = [];
+  else if (opts.tab) ui.stack = ['home'];
+  else ui.stack.push(ui.screen);
+  if (!opts.keepScroll) delete ui.scrollMem[screen];
+  ui.screen = screen;
+  ui.anim = opts.anim || (screen === 'home' ? 'back' : 'fwd');
+  ui.sheet = '';
+  if (!opts.keepToast) ui.toast = null;
+  render();
+}
+function back() {
+  var prev = ui.stack.pop() || 'home';
+  ui.screen = prev;
+  ui.anim = 'back';
+  ui.toast = null;
+  render();
+}
+
+var toastTimer = null;
+function flash(msg, label, act, id) {
+  ui.toast = { msg: msg, label: label || 'OK', act: act || 'closeToast', id: id || '' };
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { ui.toast = null; render(); }, act ? 5200 : 3800);
+  render();
+}
+
+/* ---------------- screens ---------------- */
+
+function animClass() { return ui.anim ? 'a-' + ui.anim : ''; }
+
+function nav(active) {
+  var unread = api.unread();
+  var tabs = [
+    { id: 'home', label: 'Home', icon: I.home },
+    { id: 'explore', label: 'Explore', icon: I.explore },
+    { id: 'sell' },
+    { id: 'chats', label: 'Chats', icon: I.chat },
+    { id: 'profile', label: 'Profile', icon: I.user }
+  ];
+  return '<nav class="nav" aria-label="Main">' + tabs.map(function (t) {
+    if (t.id === 'sell') return '<div><button class="navsell" data-act="openSell" aria-label="Sell something">' + svg(I.plus, 24, '#1C1B19', 2.6) + '</button></div>';
+    return '<button class="tab' + (active === t.id ? ' on' : '') + '" data-act="tab" data-id="' + t.id + '"' + (active === t.id ? ' aria-current="page"' : '') + '>' +
+      svg(t.icon, 22) + '<span>' + t.label + '</span>' +
+      (t.id === 'chats' && unread ? '<span class="dot" aria-label="' + unread + ' unread"></span>' : '') + '</button>';
+  }).join('') + '</nav>';
+}
+
+function adBlock(compact) {
+  if (compact) {
+    return '<div class="col" style="gap:6px"><span class="adlbl" style="font-size:11.5px">annoying ads here:</span><div class="ad" style="height:44px;font-size:11.5px">AD · 320 × 50</div></div>';
+  }
+  return '<div class="col" style="gap:8px"><span class="adlbl">annoying ads here:</span><div class="ad" style="height:64px">AD · 320 × 50</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="ad" style="height:96px">AD</div><div class="ad" style="height:96px">AD</div></div></div>';
+}
+
+function footerBar() {
+  return '<div style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px var(--bottom);background:var(--teal)">' +
+    '<div class="row" style="gap:10px"><button data-act="dealsInfo" aria-label="Closed deals" class="' + (ui.bump ? 'bk-bump' : '') + '" style="min-width:64px;height:44px;padding:0 14px;border-radius:12px;border:0;background:#fff;color:#000;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:1px;font-variant-numeric:tabular-nums;box-shadow:0 2px 0 rgba(0,0,0,.25)">' +
+    String(db.deals).padStart(4, '0') + '</button><span style="font-size:12.5px;font-weight:600;line-height:1.25;color:var(--mint)">deals closed<br>on DAWAT</span></div>' +
+    inventorsLink('var(--mint)') + '</div>';
+}
+function inventorsLink(color) {
+  return '<a href="' + INVENTORS_URL + '"' + (INVENTORS_URL === '#' ? ' data-act="noop"' : ' target="_blank" rel="noopener"') +
+    ' style="align-self:flex-end;font-size:11.5px;font-weight:600;color:' + color + ';text-decoration:underline;padding:12px 0 0">© 2026 Inventors</a>';
+}
+
+function thumbStyle(t, size) {
+  var cover = (t.photos && t.photos[0]) || t.cover;
+  return 'width:' + size + 'px;height:' + size + 'px;background-color:' + (t.tint || '#E2D8C6') + ';' + (cover ? 'background-image:url(' + cover + ');' : '');
+}
+function thumbIcon(t, size) {
+  var cover = (t.photos && t.photos[0]) || t.cover;
+  return cover ? '' : svg(I.cat[t.cat] || I.photo, size || 24, 'rgba(28,27,25,.45)', 1.8);
+}
+
+/* HOME */
+function homeScreen() {
+  var name = db.profile.name.trim();
+  var unread = api.unread();
+  var live = db.tickets.length;
+  return '<section class="screen ' + animClass() + '">' +
+    '<div class="scroll" data-scroll="home" style="padding:calc(var(--top) - 18px) 20px 28px;display:flex;flex-direction:column;gap:22px">' +
+
+    '<div class="row" style="justify-content:space-between;padding-top:18px">' +
+      '<button data-act="replay" aria-label="Replay intro" class="row" style="gap:10px;background:none;border:0;padding:0">' + logo(40) +
+      '<span style="font-family:var(--display);font-weight:800;font-size:24px;color:var(--teal);letter-spacing:1px">DAWAT</span></button>' +
+      '<div class="row" style="gap:8px">' +
+        '<button class="pill" data-act="openArea" aria-label="Location: ' + esc(db.profile.area) + '">' + svg(I.pin, 16, '#0E4D4A') + esc(db.profile.area) + '</button>' +
+        '<button class="pill" data-act="bell" aria-label="Notifications" style="width:44px;padding:0;justify-content:center">' + svg(I.bell, 20, '#1C1B19') +
+        (unread ? '<span class="dot" style="top:9px;right:10px"></span>' : '') + '</button>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="col" style="gap:6px"><div style="font-size:14px;font-weight:600;color:var(--muted)">' + greeting() + ', ' + esc(name ? name.split(/\s+/)[0] : 'neighbour') + '</div>' +
+    '<h1 style="font-family:var(--display);font-weight:700;font-size:32px;line-height:1.08;letter-spacing:-.8px">Your extra is someone’s <span style="color:var(--teal)">perfect find.</span></h1></div>' +
+
+    '<label class="field" style="height:52px;border-radius:16px">' + svg(I.search, 20, '#5C574E') + '<span class="sr">Search</span>' +
+    '<input type="search" enterkeyhint="search" data-field="homeQ" value="' + esc(ui.homeQ) + '" placeholder="Fresh hammour, dates, pickles…"></label>' +
+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
+      '<button data-act="openSell" class="hov" style="height:168px;border-radius:24px;border:0;background:var(--teal);color:var(--card);padding:18px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left">' +
+        '<span class="bk-pulse" style="width:44px;height:44px;border-radius:22px;background:var(--saffron);display:flex;align-items:center;justify-content:center">' + svg(I.plus, 22, '#1C1B19', 2.4) + '</span>' +
+        '<span class="col" style="gap:4px"><span style="font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.4px">Sell</span>' +
+        '<span style="font-size:12.5px;line-height:1.35;color:var(--mint)">Turn your surplus into AED today</span></span></button>' +
+      '<button data-act="openBuy" class="hov" style="position:relative;height:168px;border-radius:24px;border:1px solid var(--border);background:var(--card);padding:18px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left">' +
+        '<span style="width:44px;height:44px;border-radius:22px;background:var(--sand);display:flex;align-items:center;justify-content:center">' + svg(I.bag, 22, '#0E4D4A') + '</span>' +
+        (live ? '<span class="badge" style="position:absolute;top:18px;right:14px;background:#EAF2F0;color:var(--teal)">' + live + ' live</span>' : '') +
+        '<span class="col" style="gap:4px"><span style="font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.4px">Buy</span>' +
+        '<span style="font-size:12.5px;line-height:1.35;color:var(--muted)">Fresh from neighbours near you</span></span></button>' +
+    '</div>' +
+
+    '<div class="col" style="gap:12px"><h2 class="sec">Browse the souq</h2>' +
+    '<div class="hscroll" style="margin:0 -20px;padding:0 20px">' + CATS.map(function (c) {
+      return '<button class="chip" data-act="browseCat" data-id="' + c.id + '">' + c.label + '</button>';
+    }).join('') + '</div></div>' +
+
+    adBlock(false) +
+
+    '<div style="border-radius:24px;background:var(--sand);padding:18px;display:flex;gap:14px;align-items:center">' +
+    '<span style="flex:none">' + svg(I.leaf, 40, '#6B4A12', 1.8) + '</span><div class="col" style="gap:4px">' +
+    '<span style="font-weight:700;font-size:14.5px">Good food deserves a second table.</span>' +
+    '<span style="font-size:12.5px;color:var(--muted);line-height:1.4">Every sale here is food that didn’t go to waste in Dubai.</span></div></div>' +
+
+    '</div>' + nav('home') + '</section>';
+}
+
+/* BUY */
+function buyResults() {
+  var words = ui.q.toLowerCase().split(/\s+/).filter(Boolean);
+  return api.tickets().filter(function (k) {
+    if (ui.buyCat !== 'all' && k.cat !== ui.buyCat) return false;
+    if (ui.trays && !k.tray) return false;
+    var hay = (k.title + ' ' + k.qty + ' ' + k.area + ' ' + (k.desc || '') + ' ' + (k.tags || '') + ' ' + catLabel(k.cat)).toLowerCase();
+    return words.every(function (w) { return hay.indexOf(w) !== -1; });
+  });
+}
+
+function ticketCard(k) {
+  return '<div class="ticket" role="button" tabindex="0" data-act="openTicket" data-id="' + k.id + '" aria-label="' + esc(k.title) + ', ' + esc(k.price) + '">' +
+    '<div class="thumb" style="' + thumbStyle(k, 92) + '">' + thumbIcon(k) + '</div>' +
+    '<div class="col" style="flex:1;min-width:0;gap:3px">' +
+      '<span style="font-weight:700;font-size:15px;line-height:1.25;padding-right:78px">' + esc(k.title) + '</span>' +
+      '<span style="font-size:12.5px;color:var(--muted)">' + esc(k.qty) + ' · ' + esc(k.area) + '</span>' +
+      '<span style="font-size:11.5px;font-weight:600;color:#6B4A12">' + delivery(k.delivery).short + (k.tray ? ' · Tray for 6–10' : '') + '</span>' +
+      trustLine(k) +
+      '<div class="row" style="justify-content:space-between;margin-top:4px;gap:8px">' +
+        '<span style="font-family:var(--display);font-weight:700;font-size:17px;color:var(--teal)">' + esc(k.price) + '</span>' +
+        (k.mine ? '<span class="badge" style="background:var(--sand);color:#6B4A12;height:32px">Your ticket</span>'
+                : '<button class="btn-sm" data-act="reserve" data-id="' + k.id + '">Reserve</button>') +
+      '</div>' +
+    '</div>' +
+    '<span class="timer" aria-label="Time listed" style="position:absolute;top:12px;right:12px">' + svg(I.clock, 11, '#3D3A34', 2.6) +
+    '<span data-at="' + k.at + '">' + fmtElapsed(Date.now() - k.at) + '</span></span>' +
+  '</div>';
+}
+
+function trustLine(k) {
+  if (!k.verified && !k.taste && !k.licencePending) return '';
+  return '<span class="row" style="gap:8px;font-size:11.5px;font-weight:700;margin-top:1px">' +
+    (k.verified ? '<span class="row" style="gap:3px;color:var(--teal)">' + svg(I.shield, 13, '#0E4D4A', 2.2) + 'Verified kitchen</span>' : '') +
+    (k.licencePending ? '<span class="row" style="gap:3px;color:var(--muted2)">' + svg(I.shield, 13, '#6E685D', 2.2) + 'Licence in check</span>' : '') +
+    (k.taste ? '<span class="row" style="gap:3px;color:#3D3A34">' + star(true, 12) + k.taste.toFixed(1) + '</span>' : '') +
+  '</span>';
+}
+
+function buyScreen() {
+  var results = buyResults();
+  return '<section class="screen ' + animClass() + '">' +
+    '<div class="topbar" style="flex-direction:column;align-items:stretch;gap:10px">' +
+      '<div class="row" style="gap:8px"><button class="iconbtn" data-act="back" aria-label="Back">' + svg(I.back, 22, '#1C1B19', 2.2) + '</button>' +
+      '<div class="col" style="flex:1"><span class="t20">Find something good</span><span class="sub">Fresh from kitchens and boats near you</span></div></div>' +
+      '<label class="field" style="height:50px;margin-left:4px;border-radius:16px">' + svg(I.search, 20, '#5C574E') + '<span class="sr">Search products</span>' +
+      '<input type="search" enterkeyhint="search" data-field="q" value="' + esc(ui.q) + '" placeholder="Search: fish, dates, pickle, rice…">' +
+      (ui.q ? '<button class="iconbtn" data-act="clearQ" aria-label="Clear search" style="margin-right:-12px">' + svg(I.x, 16, '#5C574E', 2.6) + '</button>' : '') +
+      '</label>' +
+    '</div>' +
+    '<div class="scroll" data-scroll="buy" style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:18px">' +
+      '<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">' + CATS.map(function (c) {
+        var on = c.id === ui.buyCat;
+        return '<button data-act="buyCat" data-id="' + c.id + '" aria-pressed="' + on + '" style="aspect-ratio:1;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px;' +
+          (on ? 'background:var(--teal);color:var(--card);border:1px solid var(--teal)' : 'background:var(--card);color:var(--ink);border:1px solid var(--border)') + '">' +
+          svg(I.cat[c.id], 28, 'currentColor', 1.8) + '<span style="font-size:12.5px;font-weight:700;line-height:1.2;text-align:center">' + c.label + '</span></button>';
+      }).join('') + '</div>' +
+      '<button data-act="toggleTrays" aria-pressed="' + ui.trays + '" class="row hov" style="gap:12px;padding:12px 14px;border-radius:18px;text-align:left;' +
+        (ui.trays ? 'background:#EAF2F0;border:2px solid var(--teal)' : 'background:var(--sand);border:1px solid var(--sand)') + '">' +
+        '<span style="flex:none;width:40px;height:40px;border-radius:20px;background:var(--card);display:flex;align-items:center;justify-content:center">' + svg(I.people, 20, '#0E4D4A') + '</span>' +
+        '<span class="col" style="flex:1;gap:2px"><span style="font-weight:700;font-size:14.5px">Family trays · serve 6–10</span>' +
+        '<span style="font-size:12.5px;color:var(--muted)">For gatherings, iftars and office lunches</span></span>' +
+        '<span style="flex:none;font-size:12.5px;font-weight:700;color:var(--teal)">' + (ui.trays ? 'On' : 'Show') + '</span></button>' +
+      adBlock(true) +
+      '<div class="row" style="justify-content:space-between;align-items:baseline"><h2 class="sec">Live tickets</h2>' +
+      '<span style="font-size:13px;font-weight:600;color:var(--teal)">' + results.length + (results.length === 1 ? ' ticket' : ' tickets') + '</span></div>' +
+      (results.length
+        ? '<div class="col" style="gap:12px">' + results.map(ticketCard).join('') + '</div>'
+        : '<div style="padding:22px;border-radius:20px;border:1.5px dashed var(--dashed);text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center">' +
+          '<span style="font-weight:700;font-size:15px">Nothing here yet</span>' +
+          '<span style="font-size:13px;color:var(--muted);line-height:1.4">Try another word — or be the one who brings it to the table.</span>' +
+          '<button class="btn-sm" data-act="openSell" style="font-size:14px;padding:0 18px">Sell it yourself</button></div>') +
+    '</div>' + footerBar() + '</section>';
+}
+
+/* TICKET DETAIL */
+function ticketScreen() {
+  var t = api.ticket(ui.ticketId);
+  if (!t) return buyScreen();
+  var photos = t.photos || [];
+  var d = delivery(t.delivery);
+  var hero = photos.length
+    ? '<div class="hscroll" style="gap:0;height:300px;scroll-snap-type:x mandatory">' + photos.map(function (p, i) {
+        return '<div role="img" aria-label="Photo ' + (i + 1) + ' of ' + photos.length + '" style="flex:none;width:100%;height:300px;scroll-snap-align:start;background:#E2D8C6 center/cover no-repeat;background-image:url(' + p + ')"></div>';
+      }).join('') + '</div>'
+    : '<div style="height:260px;background:' + (t.tint || '#E2D8C6') + ';display:flex;align-items:center;justify-content:center">' + svg(I.cat[t.cat] || I.photo, 72, 'rgba(28,27,25,.35)', 1.4) + '</div>';
+
+  return '<section class="screen ' + animClass() + '">' +
+    '<div class="scroll" data-scroll="ticket">' +
+      '<div style="position:relative">' + hero +
+        '<button class="iconbtn" data-act="back" aria-label="Back" style="position:absolute;top:calc(var(--top) - 6px);left:12px;background:rgba(255,253,248,.92);box-shadow:0 2px 8px rgba(0,0,0,.12)">' + svg(I.back, 22, '#1C1B19', 2.2) + '</button>' +
+        '<span class="timer" style="position:absolute;top:var(--top);right:16px;background:rgba(241,230,210,.95);padding:6px 10px;font-size:12px">' + svg(I.clock, 12, '#3D3A34', 2.6) +
+        'Listed <span data-at="' + t.at + '">' + fmtElapsed(Date.now() - t.at) + '</span> ago</span>' +
+        (photos.length > 1 ? '<span class="badge" style="position:absolute;bottom:12px;right:16px;background:rgba(28,27,25,.75);color:var(--card)">' + photos.length + ' photos · swipe</span>' : '') +
+      '</div>' +
+
+      '<div class="col" style="padding:20px;gap:18px">' +
+        '<div class="col" style="gap:8px">' +
+          '<div class="row" style="gap:6px;flex-wrap:wrap">' +
+            '<span class="badge" style="background:#EAF2F0;color:var(--teal)">' + catLabel(t.cat) + '</span>' +
+            (t.tray ? '<span class="badge" style="background:#EAF2F0;color:var(--teal)">' + svg(I.people, 13, '#0E4D4A', 2.2) + 'Family tray</span>' : '') +
+            (t.demo ? '<span class="badge" style="background:var(--sand);color:#6B4A12">Demo listing</span>' : '') +
+            (t.mine ? '<span class="badge" style="background:var(--sand);color:#6B4A12">Your ticket</span>' : '') +
+          '</div>' +
+          '<h1 style="font-family:var(--display);font-weight:700;font-size:28px;line-height:1.1;letter-spacing:-.6px">' + esc(t.title) + '</h1>' +
+          '<span style="font-family:var(--display);font-weight:800;font-size:26px;color:var(--teal)">' + esc(t.price) + '</span>' +
+        '</div>' +
+
+        '<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">' +
+          factTile(I.box, 'Quantity', t.qty) + factTile(I.pin, 'Area', t.area) + factTile(I.truck, 'Delivery', d.short) +
+        '</div>' +
+
+        '<div class="card col" style="padding:16px;gap:6px"><h2 class="small">About it</h2>' +
+        '<p style="margin:0;font-size:14.5px;line-height:1.5;color:#3D3A34">' + (t.desc ? esc(t.desc) : 'The seller kept it short — ask them anything once you reserve.') + '</p></div>' +
+
+        '<div class="card row" style="padding:14px 16px;gap:12px">' +
+          '<span style="flex:none;width:48px;height:48px;border-radius:24px;background:var(--teal);color:var(--saffron);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:17px">' +
+          (t.mine ? esc(initials(db.profile.name)) : svg(I.user, 22, '#E8A33D')) + '</span>' +
+          '<span class="col" style="gap:2px"><span style="font-weight:700;font-size:15px">' + (t.mine ? 'You' : t.demo ? 'Demo neighbour' : 'A neighbour') + '</span>' +
+          '<span style="font-size:12.5px;color:var(--muted)">Neighbour in ' + esc(t.area) + '</span></span>' +
+        '</div>' +
+
+        (t.verified ? trustCard(I.shield, 'Verified kitchen', 'Trade licence and Dubai Municipality home-kitchen approval checked by DAWAT.')
+          : t.licencePending ? trustCard(I.shield, 'Licence in check', 'DAWAT checks the trade licence and kitchen approval before the Verified badge appears.')
+          : '') +
+
+        (t.taste ?
+        '<div class="card col" style="padding:14px 16px;gap:10px"><div class="row" style="justify-content:space-between"><h2 class="small">Ratings</h2>' +
+        '<span class="sub">' + t.rated + ' buyers' + (t.demo ? ' · demo data' : '') + '</span></div>' +
+        ratingBar('Taste', t.taste) + ratingBar('Portion size', t.portion) + '</div>' : '') +
+
+        (t.mine ? '' :
+        '<div class="col" style="gap:10px"><h2 class="small">How it works</h2>' +
+          step(1, 'Reserve it', 'It comes off the souq and is held for you.') +
+          step(2, 'Chat with the seller', 'Your conversation opens instantly — agree on a time.') +
+          step(3, d.id === 'pickup' ? 'Collect it and enjoy' : 'Receive it and enjoy', 'Good food, a second table, a happy neighbour.') +
+        '</div>') +
+
+        (t.demo ? '<p class="sub" style="margin:0;line-height:1.45">This is an example ticket for the DAWAT prototype — not a real seller.</p>' : '') +
+      '</div>' +
+    '</div>' +
+
+    '<div class="bottombar row" style="gap:14px">' +
+      (t.mine
+        ? '<button class="btn" data-act="takeDown" data-id="' + t.id + '" style="background:var(--card);color:var(--ink);border:1px solid var(--border)">' + svg(I.trash, 20, '#C9561E') + 'Take it down</button>'
+        : '<div class="col" style="flex:none"><span class="sub">Total</span><span style="font-family:var(--display);font-weight:800;font-size:20px;color:var(--teal);white-space:nowrap">' + esc(t.price) + '</span></div>' +
+          '<button class="btn" data-act="reserve" data-id="' + t.id + '" data-from="ticket">Reserve it' + svg(I.arrow, 20, '#E8A33D', 2.4) + '</button>') +
+    '</div>' +
+  '</section>';
+}
+function trustCard(icon, title, text) {
+  return '<div class="row" style="gap:12px;padding:14px 16px;border-radius:20px;background:#EAF2F0;border:1px solid #CFE3DF;align-items:flex-start">' +
+    '<span style="flex:none;margin-top:1px">' + svg(icon, 22, '#0E4D4A') + '</span><span class="col" style="gap:2px">' +
+    '<span style="font-weight:700;font-size:14.5px;color:var(--teal)">' + title + '</span><span style="font-size:12.5px;color:var(--muted);line-height:1.4">' + text + '</span></span></div>';
+}
+function ratingBar(label, v) {
+  return '<div class="row" style="gap:10px"><span style="width:92px;font-size:13px;font-weight:600">' + label + '</span>' +
+    '<span style="flex:1;height:8px;border-radius:4px;background:var(--sand);overflow:hidden"><span style="display:block;height:100%;width:' + (v / 5 * 100) + '%;background:var(--saffron)"></span></span>' +
+    '<span class="row" style="gap:3px;width:42px;justify-content:flex-end;font-weight:700;font-size:13px">' + star(true, 12) + v.toFixed(1) + '</span></div>';
+}
+function factTile(icon, label, value) {
+  return '<div class="card col" style="padding:12px;gap:4px;border-radius:16px">' + svg(icon, 18, '#0E4D4A') +
+    '<span class="sub" style="font-size:11px">' + label + '</span><span style="font-size:13.5px;font-weight:700;line-height:1.25">' + esc(value) + '</span></div>';
+}
+function step(n, title, text) {
+  return '<div class="row" style="gap:12px;align-items:flex-start"><span style="flex:none;width:28px;height:28px;border-radius:14px;background:var(--sand);color:#6B4A12;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">' + n + '</span>' +
+    '<span class="col" style="gap:2px"><span style="font-weight:700;font-size:14px">' + title + '</span><span style="font-size:12.5px;color:var(--muted);line-height:1.4">' + text + '</span></span></div>';
+}
+
+/* SELL */
+function sellScreen() {
+  var d = db.draft;
+  var slots = [];
+  for (var i = 0; i < 6; i++) {
+    if (i < d.photos.length) {
+      slots.push('<div style="position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;background:#E2D8C6 center/cover no-repeat;background-image:url(' + d.photos[i] + ')">' +
+        (i === 0 ? '<span style="position:absolute;left:8px;bottom:8px;padding:3px 8px;border-radius:8px;background:var(--ink);color:var(--card);font-size:10.5px;font-weight:700">Cover</span>' : '') +
+        '<button data-act="removePhoto" data-id="' + i + '" aria-label="Remove photo" style="position:absolute;top:2px;right:2px;width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center">' +
+        '<span style="width:24px;height:24px;border-radius:12px;background:rgba(28,27,25,.75);display:flex;align-items:center;justify-content:center">' + svg(I.x, 12, '#FFFDF8', 3) + '</span></button></div>');
+    } else {
+      var next = i === d.photos.length;
+      var col = next ? '#0E4D4A' : '#8A8273';
+      slots.push('<label style="aspect-ratio:1;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;' +
+        (next ? 'background:var(--card);border:2px dashed var(--teal)' : 'background:#FBF7EF;border:1.5px dashed var(--dashed)') + '">' +
+        '<input type="file" accept="image/*" multiple data-act="addPhoto" class="sr">' + svg(I.plus, 26, col, 2.4) +
+        '<span style="font-size:11px;font-weight:600;color:' + col + '">' + (i === 0 ? 'Cover photo' : 'Add photo') + '</span></label>');
+    }
+  }
+  return '<section class="screen ' + animClass() + '" style="z-index:3">' +
+    '<div class="topbar"><button class="iconbtn" data-act="back" aria-label="Back">' + svg(I.back, 22, '#1C1B19', 2.2) + '</button>' +
+    '<div class="col" style="flex:1"><span class="t20">New sale ticket</span><span class="sub">Draft · saved as you type</span></div></div>' +
+
+    '<div class="scroll" data-scroll="sell" style="padding:20px;display:flex;flex-direction:column;gap:22px">' +
+      '<div class="col" style="gap:10px"><div class="row" style="justify-content:space-between;align-items:baseline"><h2 class="small">Photos</h2>' +
+      '<span style="font-size:12.5px;font-weight:600;color:var(--teal)">' + d.photos.length + ' / 6</span></div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">' + slots.join('') + '</div>' +
+      '<span style="font-size:12.5px;color:var(--muted);line-height:1.4">Bright daylight photos help buyers say yes faster.</span></div>' +
+
+      '<div class="col" style="gap:14px"><h2 class="small">About your product</h2>' +
+        '<label class="col" style="gap:6px"><span class="lbl">Title</span><span class="field"><input type="text" data-field="title" maxlength="80" value="' + esc(d.title) + '" placeholder="e.g. Fresh hammour, caught today"></span></label>' +
+        '<div class="col" style="gap:6px"><span class="lbl">Category</span><div class="row" style="flex-wrap:wrap;gap:8px">' +
+        CATS.filter(function (c) { return c.id !== 'all'; }).map(function (c) {
+          return '<button class="chip' + (d.cat === c.id ? ' on' : '') + '" data-act="sellCat" data-id="' + c.id + '" aria-pressed="' + (d.cat === c.id) + '">' + c.label + '</button>';
+        }).join('') + '</div></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+          '<label class="col" style="gap:6px"><span class="lbl">Quantity</span><span class="field"><input type="text" data-field="qty" maxlength="30" value="' + esc(d.qty) + '" placeholder="e.g. 4 kg, 20 jars"></span></label>' +
+          '<label class="col" style="gap:6px"><span class="lbl">Price</span><span class="field" style="gap:6px"><span style="font-size:14px;font-weight:700;color:var(--teal)">AED</span>' +
+          '<input type="text" inputmode="decimal" data-field="price" maxlength="20" value="' + esc(d.price) + '" placeholder="0"></span></label>' +
+        '</div>' +
+        toggleCard('tray', d.tray, I.people, 'Offer it as a family tray', 'Serves 6–10 — popular for gatherings and office lunches') +
+        (d.cat === 'home' ? toggleCard('licensed', d.licensed, I.shield, 'My home kitchen is licensed', 'Trade licence + Dubai Municipality approval. We check it, then add the Verified badge.') : '') +
+        '<label class="col" style="gap:6px"><span class="lbl">Description</span><span class="field" style="align-items:stretch"><textarea rows="4" data-field="desc" maxlength="600" placeholder="When was it made or caught? How is it stored? What makes it special?">' + esc(d.desc) + '</textarea></span>' +
+        '<span class="sub">Tell the story — buyers trust sellers who share details.</span></label>' +
+        '<div class="col" style="gap:8px"><span class="lbl">Delivery</span>' + DELIVERIES.map(function (o) {
+          var on = d.delivery === o.id;
+          return '<button data-act="delivery" data-id="' + o.id + '" aria-pressed="' + on + '" style="display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 14px;border-radius:16px;text-align:left;background:' + (on ? '#EAF2F0' : 'var(--card)') + ';border:' + (on ? '2px solid var(--teal)' : '1px solid var(--border)') + '">' +
+            '<span style="flex:none;width:20px;height:20px;border-radius:10px;background:var(--card);border:' + (on ? '6px solid var(--teal)' : '2px solid #A39A8A') + '"></span>' +
+            '<span class="col" style="gap:2px"><span style="font-size:14.5px;font-weight:700">' + o.label + '</span><span style="font-size:12.5px;color:var(--muted)">' + o.sub + '</span></span></button>';
+        }).join('') + '</div>' +
+        '<div class="card row" style="padding:12px 14px;gap:10px;border-radius:16px">' + svg(I.pin, 18, '#0E4D4A') +
+        '<span style="flex:1;font-size:13.5px">Listed in <b>' + esc(db.profile.area) + '</b></span><button class="btn-ghost" data-act="openArea" style="height:36px;font-size:12.5px">Change</button></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="bottombar"><button class="btn" data-act="publish">Put it on the table' + svg(I.arrow, 20, '#E8A33D', 2.4) + '</button></div>' +
+  '</section>';
+}
+
+function toggleCard(key, on, icon, title, sub) {
+  return '<button data-act="toggleDraft" data-id="' + key + '" role="switch" aria-checked="' + on + '" style="display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 14px;border-radius:16px;text-align:left;background:' +
+    (on ? '#EAF2F0' : 'var(--card)') + ';border:' + (on ? '2px solid var(--teal)' : '1px solid var(--border)') + '">' +
+    '<span style="flex:none">' + svg(icon, 22, '#0E4D4A') + '</span>' +
+    '<span class="col" style="flex:1;gap:2px"><span style="font-size:14.5px;font-weight:700">' + title + '</span><span style="font-size:12.5px;color:var(--muted);line-height:1.35">' + sub + '</span></span>' +
+    '<span style="flex:none;width:44px;height:26px;border-radius:13px;padding:3px;background:' + (on ? 'var(--teal)' : '#D8CEBC') + ';display:flex;justify-content:' + (on ? 'flex-end' : 'flex-start') + '">' +
+    '<span style="width:20px;height:20px;border-radius:10px;background:var(--card)"></span></span></button>';
+}
+
+/* CHATS */
+function chatsScreen() {
+  var support = api.thread('support');
+  var deals = api.dealThreads();
+  return '<section class="screen ' + animClass() + '" style="z-index:3">' +
+    '<div class="topbar"><button class="pill" data-act="goHome" aria-label="Exit chats" style="font-size:14px;font-weight:700;padding:0 14px 0 10px">' + svg(I.exit, 18, '#1C1B19', 2.2) + 'Exit</button>' +
+    '<span class="t20" style="flex:1;text-align:right">Chats</span></div>' +
+    '<div class="scroll" data-scroll="chats" style="padding:16px;display:flex;flex-direction:column;gap:12px">' +
+      chatRow(support) + deals.map(chatRow).join('') +
+      (deals.length ? '' :
+      '<div class="col" style="flex:1;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center">' + svg(I.chatLines, 56, '#CDBFA6', 1.4) +
+      '<span style="font-size:15px;font-weight:700;color:#3D3A34">No chats yet</span>' +
+      '<span style="font-size:13px;line-height:1.45;color:var(--muted2)">When you reserve food or someone wants yours, your conversation will start here.</span>' +
+      '<button class="btn-sm" data-act="openBuy" style="margin-top:6px">Find something good</button></div>') +
+    '</div></section>';
+}
+function chatRow(th) {
+  var l = last(th);
+  var avatar = th.kind === 'support'
+    ? '<span style="flex:none;width:48px;height:48px;border-radius:24px;background:var(--teal);display:flex;align-items:center;justify-content:center">' + svg(I.headset, 24, '#E8A33D') + '</span>'
+    : '<span class="thumb" style="' + thumbStyle(th.ticket, 48) + 'border-radius:24px">' + thumbIcon(th.ticket, 20) + '</span>';
+  return '<button data-act="openThread" data-id="' + th.id + '" class="hov" style="display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:72px;border-radius:18px;border:1px solid var(--border);background:var(--card);text-align:left;width:100%">' + avatar +
+    '<span class="col" style="flex:1;min-width:0;gap:3px"><span class="row" style="justify-content:space-between;gap:8px">' +
+    '<span style="font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(th.kind === 'support' ? 'DAWAT Support' : th.ticket.title) + '</span>' +
+    '<span style="flex:none;font-size:11.5px;font-weight:600;color:var(--teal)">' + (th.kind === 'support' ? 'Online' : fmtClock(l.at)) + '</span></span>' +
+    '<span class="row" style="gap:8px"><span style="flex:1;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;' + (th.unread ? 'font-weight:700;color:var(--ink)' : '') + '">' +
+    esc((l.me ? 'You: ' : '') + l.text) + '</span>' +
+    (th.unread ? '<span style="flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--alert);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">' + th.unread + '</span>' : '') +
+    '</span></span></button>';
+}
+
+function threadScreen() {
+  var th = api.thread(ui.threadId);
+  if (!th) return chatsScreen();
+  var isSupport = th.kind === 'support';
+  var head = isSupport
+    ? '<span style="flex:none;width:40px;height:40px;border-radius:20px;background:var(--teal);display:flex;align-items:center;justify-content:center">' + svg(I.headset, 20, '#E8A33D') + '</span>' +
+      '<span class="col"><span style="font-size:15.5px;font-weight:700">DAWAT Support</span><span style="font-size:12px;color:var(--teal);font-weight:600">Online · usually replies fast</span></span>'
+    : '<span class="thumb" style="' + thumbStyle(th.ticket, 40) + 'border-radius:20px">' + thumbIcon(th.ticket, 18) + '</span>' +
+      '<span class="col" style="min-width:0"><span style="font-size:15.5px;font-weight:700">' + esc(th.peer) + '</span><span style="font-size:12px;color:var(--teal);font-weight:600">' + esc(th.ticket.area) + ' · ' + delivery(th.ticket.delivery).short + '</span></span>';
+
+  var deal = isSupport ? '' :
+    '<div class="card row" style="padding:10px 12px;gap:10px;border-radius:16px">' +
+    '<span class="thumb" style="' + thumbStyle(th.ticket, 44) + 'border-radius:12px">' + thumbIcon(th.ticket, 18) + '</span>' +
+    '<span class="col" style="flex:1;min-width:0;gap:2px"><span style="font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(th.ticket.title) + '</span>' +
+    '<span style="font-size:12.5px;color:var(--muted)">' + esc(th.ticket.qty) + ' · <b style="color:var(--teal)">' + esc(th.ticket.price) + '</b></span></span>' +
+    '<span class="badge" style="background:#EAF2F0;color:var(--teal)">' + svg(I.check, 12, '#0E4D4A', 3) + 'Reserved</span></div>';
+
+  return '<section class="screen ' + animClass() + '" style="z-index:4">' +
+    '<div class="topbar" style="gap:10px"><button class="iconbtn" data-act="back" aria-label="Back to chats">' + svg(I.back, 22, '#1C1B19', 2.2) + '</button>' + head + '</div>' +
+    '<div class="scroll" data-scroll="thread" style="padding:16px;display:flex;flex-direction:column;gap:10px">' + deal +
+    th.msgs.map(function (m) {
+      if (m.sys) return '<div class="sysmsg">' + esc(m.text) + '</div>';
+      return '<div style="display:flex;justify-content:' + (m.me ? 'flex-end' : 'flex-start') + '"><div class="bubble ' + (m.me ? 'me' : 'them') + '">' + esc(m.text) + '</div></div>';
+    }).join('') +
+    rateCard(th) +
+    (th.ticket && th.ticket.demo ? '<p class="sub" style="text-align:center;margin:6px 0 0">Demo chat — replies are automatic in this prototype.</p>' : '') +
+    '</div>' +
+    '<div class="row" style="flex:none;gap:8px;padding:10px 12px var(--bottom);background:var(--card);border-top:1px solid var(--border)">' +
+      '<label class="field" style="flex:1;height:48px;min-height:48px;border-radius:24px;background:var(--cream)"><span class="sr">Message</span>' +
+      '<input type="text" enterkeyhint="send" data-field="msg" value="' + esc(ui.msg) + '" placeholder="Write a message…"></label>' +
+      '<button data-act="send" aria-label="Send" style="flex:none;width:48px;height:48px;border-radius:24px;border:0;background:var(--teal);display:flex;align-items:center;justify-content:center">' + svg(I.send, 20, '#FFFDF8', 2.2) + '</button>' +
+    '</div></section>';
+}
+
+// After the seller has replied, the buyer can rate taste and portion size.
+function rateCard(th) {
+  if (th.kind !== 'deal' || !th.msgs.some(function (m) { return !m.me && !m.sys; })) return '';
+  var r = th.rating || { taste: 0, portion: 0 };
+  var done = r.taste && r.portion;
+  var row = function (k, label) {
+    var stars = '';
+    for (var n = 1; n <= 5; n++) {
+      stars += '<button data-act="rate" data-k="' + k + '" data-v="' + n + '" aria-label="' + label + ' ' + n + ' of 5" style="width:36px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;padding:0">' + star(n <= r[k], 24) + '</button>';
+    }
+    return '<div class="row" style="justify-content:space-between"><span style="font-size:13.5px;font-weight:600">' + label + '</span><span class="row">' + stars + '</span></div>';
+  };
+  return '<div class="card col" style="padding:12px 14px;gap:4px;margin-top:6px;border-radius:18px">' +
+    '<span style="font-weight:700;font-size:14.5px">' + (done ? 'Thanks — your rating helps neighbours choose.' : 'Got it? Rate it for your neighbours') + '</span>' +
+    row('taste', 'Taste') + row('portion', 'Portion size') + '</div>';
+}
+
+/* PROFILE */
+function profileScreen() {
+  var p = db.profile;
+  var mine = api.myTickets();
+  var deals = api.dealThreads();
+  return '<section class="screen ' + animClass() + '">' +
+    '<div class="scroll" data-scroll="profile" style="padding:var(--top) 20px 28px;display:flex;flex-direction:column;gap:22px">' +
+      '<div class="row" style="justify-content:space-between"><h1 class="t20" style="font-size:24px">Profile</h1>' +
+      '<span class="badge" style="background:var(--sand);color:#6B4A12">' + svg(I.pin, 13, '#6B4A12', 2.4) + esc(p.area) + '</span></div>' +
+
+      '<div style="border-radius:24px;background:var(--teal);color:var(--card);padding:18px;display:flex;flex-direction:column;gap:14px">' +
+        '<div class="row" style="gap:14px">' +
+          '<span style="flex:none;width:64px;height:64px;border-radius:32px;background:var(--saffron);color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:24px" data-initials>' + esc(initials(p.name)) + '</span>' +
+          '<label class="col" style="flex:1;min-width:0;gap:4px"><span style="font-size:12px;font-weight:600;color:var(--mint)">Your name on DAWAT</span>' +
+          '<span class="row" style="gap:6px;border-bottom:1.5px solid rgba(207,227,223,.5);padding-bottom:4px">' +
+          '<input type="text" data-field="name" maxlength="40" value="' + esc(p.name) + '" placeholder="Add your name" style="flex:1;min-width:0;border:0;outline:none;background:transparent;color:var(--card);font-family:var(--display);font-weight:700;font-size:20px">' +
+          svg(I.edit, 16, '#CFE3DF') + '</span></label>' +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">' +
+          stat(mine.length, 'live tickets') + stat(deals.length, 'reserved') + stat(db.deals, 'deals on DAWAT') +
+        '</div>' +
+      '</div>' +
+
+      '<div class="col" style="gap:10px"><div class="row" style="justify-content:space-between;align-items:baseline"><h2 class="sec">Your tickets</h2>' +
+      (mine.length ? '<button class="btn-ghost" data-act="openSell" style="height:36px;font-size:12.5px">+ New</button>' : '') + '</div>' +
+      (mine.length ? '<div class="col" style="gap:12px">' + mine.map(ticketCard).join('') + '</div>'
+        : emptyCard('Your kitchen has something extra?', 'Put it on the table — buyers nearby can see it the moment you post.', 'openSell', 'Sell something')) +
+      '</div>' +
+
+      '<div class="col" style="gap:10px"><h2 class="sec">Your reservations</h2>' +
+      (deals.length ? '<div class="col" style="gap:10px">' + deals.map(chatRow).join('') + '</div>'
+        : emptyCard('Nothing reserved yet', 'Imagine tonight’s dinner coming from a neighbour’s kitchen. Have a look.', 'openBuy', 'Find something good')) +
+      '</div>' +
+
+      '<div class="col" style="gap:10px"><h2 class="sec">Neighbourhood</h2><span class="sub" style="margin-top:-4px">Your new tickets are listed here.</span>' +
+      '<div class="row" style="flex-wrap:wrap;gap:8px">' + AREAS.map(function (a) {
+        return '<button class="chip' + (a === p.area ? ' on' : '') + '" data-act="pickArea" data-id="' + esc(a) + '" aria-pressed="' + (a === p.area) + '">' + esc(a) + '</button>';
+      }).join('') + '</div></div>' +
+
+      '<div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn-ghost row" data-act="openThread" data-id="support" style="gap:6px">' + svg(I.headset, 16, '#0E4D4A') + 'Talk to support</button>' +
+      '<button class="btn-ghost row" data-act="askReset" style="gap:6px">' + svg(I.refresh, 16, '#C9561E') + 'Reset demo</button></div>' +
+
+      '<div class="row" style="justify-content:space-between;padding-top:4px"><span class="sub">Nothing hits like home.</span>' + inventorsLink('var(--muted2)') + '</div>' +
+    '</div>' + nav('profile') + '</section>';
+}
+function stat(n, label) {
+  return '<div style="border-radius:16px;background:rgba(255,253,248,.1);padding:10px;display:flex;flex-direction:column;gap:2px">' +
+    '<span style="font-family:var(--display);font-weight:800;font-size:22px">' + n + '</span><span style="font-size:11.5px;color:var(--mint);line-height:1.2">' + label + '</span></div>';
+}
+function emptyCard(title, text, act, label) {
+  return '<div style="padding:20px;border-radius:20px;border:1.5px dashed var(--dashed);text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center">' +
+    '<span style="font-weight:700;font-size:15px">' + title + '</span><span style="font-size:13px;color:var(--muted);line-height:1.4">' + text + '</span>' +
+    '<button class="btn-sm" data-act="' + act + '" style="margin-top:4px">' + label + '</button></div>';
+}
+
+/* overlays */
+function areaSheet() {
+  return '<div class="scrim" data-act="closeSheet"></div><div class="sheet" role="dialog" aria-label="Choose your neighbourhood"><div class="grab"></div>' +
+    '<div class="col" style="gap:4px"><span class="t20">Where’s home?</span><span style="font-size:13px;color:var(--muted)">Your new tickets will be listed in this neighbourhood.</span></div>' +
+    '<div class="row" style="flex-wrap:wrap;gap:8px">' + AREAS.map(function (a) {
+      return '<button class="chip' + (a === db.profile.area ? ' on' : '') + '" data-act="pickArea" data-id="' + esc(a) + '">' + esc(a) + '</button>';
+    }).join('') + '</div></div>';
+}
+function toastHtml() {
+  var t = ui.toast;
+  return '<div class="toast" role="status"><span style="flex:1">' + esc(t.msg) + '</span><button data-act="' + t.act + '" data-id="' + esc(t.id) + '">' + esc(t.label) + '</button></div>';
+}
+
+/* ---------------- render ---------------- */
+
+var $app = document.getElementById('app');
+var SCREENS = { home: homeScreen, buy: buyScreen, ticket: ticketScreen, sell: sellScreen, chats: chatsScreen, thread: threadScreen, profile: profileScreen };
+
+function render() {
+  // remember focus + scroll so a re-render never disturbs typing
+  var a = document.activeElement, focus = null;
+  if (a && a.dataset && a.dataset.field) {
+    focus = { f: a.dataset.field };
+    try { focus.s = a.selectionStart; focus.e = a.selectionEnd; } catch (e) {}
+  }
+  $app.querySelectorAll('[data-scroll]').forEach(function (el) { ui.scrollMem[el.dataset.scroll] = el.scrollTop; });
+
+  $app.innerHTML = (SCREENS[ui.screen] || homeScreen)() + (ui.sheet === 'area' ? areaSheet() : '') + (ui.toast ? toastHtml() : '');
+
+  $app.querySelectorAll('[data-scroll]').forEach(function (el) {
+    var k = el.dataset.scroll;
+    if (k === 'thread') el.scrollTop = el.scrollHeight;
+    else if (ui.scrollMem[k] != null) el.scrollTop = ui.scrollMem[k];
+  });
+  if (focus) {
+    var el = $app.querySelector('[data-field="' + focus.f + '"]');
+    if (el) { el.focus({ preventScroll: true }); try { if (focus.s != null) el.setSelectionRange(focus.s, focus.e); } catch (e) {} }
+  }
+  ui.anim = '';
+  ui.bump = false;
+}
+
+/* ---------------- actions ---------------- */
+
+var A = {
+  noop: function (d, el, e) { e.preventDefault(); },
+  replay: function () { runIntro(); },
+  closeToast: function () { clearTimeout(toastTimer); ui.toast = null; render(); },
+  goHome: function () { go('home'); },
+  back: function () { back(); },
+  tab: function (d) {
+    if (d.id === 'home') go('home', { anim: 'in' });
+    else if (d.id === 'explore') { ui.q = ''; ui.buyCat = 'all'; go('buy', { tab: true }); }
+    else if (d.id === 'chats') go('chats', { tab: true });
+    else if (d.id === 'profile') go('profile', { tab: true, anim: 'in' });
+  },
+  openSell: function () { go('sell'); },
+  openBuy: function () { ui.q = ''; ui.buyCat = 'all'; ui.trays = false; go('buy'); },
+  browseCat: function (d) { ui.q = ''; ui.buyCat = d.id; ui.trays = false; go('buy'); },
+  buyCat: function (d) { ui.buyCat = d.id; render(); },
+  toggleTrays: function () { ui.trays = !ui.trays; render(); },
+  toggleDraft: function (d) { db.draft[d.id] = !db.draft[d.id]; persist(); render(); },
+  rate: function (d) {
+    var th = api.thread(ui.threadId);
+    if (!th) return;
+    th.rating = th.rating || { taste: 0, portion: 0 };
+    th.rating[d.k] = +d.v;
+    persist(); render();
+  },
+  clearQ: function () { ui.q = ''; render(); var el = $app.querySelector('[data-field="q"]'); if (el) el.focus(); },
+  openTicket: function (d) { ui.ticketId = d.id; go('ticket'); },
+  openArea: function () { ui.sheet = 'area'; render(); },
+  closeSheet: function () { ui.sheet = ''; render(); },
+  pickArea: function (d) {
+    db.profile.area = d.id; persist(); ui.sheet = '';
+    flash('Home is ' + d.id + ' now — your new tickets will be listed there.');
+  },
+  bell: function () {
+    var u = api.unread();
+    if (u) go('chats');
+    else flash('All quiet for now. We’ll ping you the moment a neighbour replies.');
+  },
+  dealsInfo: function () { flash(db.deals + (db.deals === 1 ? ' deal' : ' deals') + ' closed by neighbours on DAWAT.'); },
+
+  reserve: function (d) {
+    var th = api.reserve(d.id);
+    if (!th) return;
+    ui.bump = true;
+    if (d.from === 'ticket') { ui.stack.pop(); ui.screen = 'buy'; ui.anim = 'back'; }
+    flash('Deal closed! Your chat with the seller is open.', 'Open chat', 'openThread', th.id);
+  },
+  takeDown: function (d) {
+    api.takeDown(d.id);
+    back();
+    flash('Taken down. Put it back on the table any time.');
+  },
+
+  openThread: function (d) {
+    clearTimeout(toastTimer);
+    ui.threadId = d.id; ui.msg = '';
+    api.markRead(d.id);
+    // back from a chat lands on the chat list, unless it was opened from Profile
+    if (ui.screen !== 'chats' && ui.screen !== 'profile') { ui.stack.push(ui.screen); ui.screen = 'chats'; }
+    go('thread');
+  },
+  send: function () { sendMsg(); },
+
+  sellCat: function (d) { db.draft.cat = d.id; persist(); render(); },
+  delivery: function (d) { db.draft.delivery = d.id; persist(); render(); },
+  removePhoto: function (d) { db.draft.photos.splice(+d.id, 1); persist(); render(); },
+  publish: function () {
+    var d = db.draft;
+    if (!d.photos.length) return flash('Add at least one photo — buyers want to see it.');
+    if (!d.title.trim()) return flash('Give it a title so neighbours can find it.');
+    if (!d.price.trim()) return flash('Set your price in AED.');
+    if (d.cat === 'home' && !d.licensed) return flash('Home-cooked meals go up once your kitchen is licensed — switch it on when yours is approved.');
+    var t = api.createTicket(d);
+    if (!t) return flash('Your phone is out of space for photos — try fewer or smaller ones.');
+    ui.q = ''; ui.buyCat = 'all';
+    go('buy', { replace: true, keepToast: true });
+    flash('Your ticket is live — it is at the top of the list now.');
+  },
+
+  askReset: function () { flash('Start the demo fresh? Your tickets and chats will be cleared.', 'Reset', 'doReset'); },
+  doReset: function () {
+    api.reset();
+    ui.q = ''; ui.buyCat = 'all'; ui.homeQ = ''; ui.stack = [];
+    ui.toast = null; ui.screen = 'home';
+    runIntro();
+  }
+};
+
+function sendMsg() {
+  var text = ui.msg.trim();
+  if (!text) return;
+  ui.msg = '';
+  api.send(ui.threadId, text);
+  render();
+}
+
+$app.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-act]');
+  if (!el || el.tagName === 'INPUT') return;
+  var fn = A[el.dataset.act];
+  if (fn) fn(el.dataset, el, e);
+});
+
+$app.addEventListener('keydown', function (e) {
+  var t = e.target;
+  if (e.key === 'Enter' && t.getAttribute('role') === 'button') { e.preventDefault(); t.click(); return; }
+  if (e.key !== 'Enter' || !t.dataset) return;
+  if (t.dataset.field === 'homeQ') { ui.q = ui.homeQ.trim(); ui.buyCat = 'all'; ui.homeQ = ''; t.blur(); go('buy'); }
+  else if (t.dataset.field === 'q') t.blur();
+  else if (t.dataset.field === 'msg') { e.preventDefault(); sendMsg(); }
+});
+
+var saveTimer = null;
+$app.addEventListener('input', function (e) {
+  var f = e.target.dataset && e.target.dataset.field;
+  if (!f) return;
+  var v = e.target.value;
+  if (f === 'q') { ui.q = v; render(); }
+  else if (f === 'homeQ') ui.homeQ = v;
+  else if (f === 'msg') ui.msg = v;
+  else if (f === 'name') {
+    db.profile.name = v;
+    $app.querySelectorAll('[data-initials]').forEach(function (el) { el.textContent = initials(v); });
+    clearTimeout(saveTimer); saveTimer = setTimeout(persist, 300);
+  }
+  else if (f in db.draft) { db.draft[f] = v; clearTimeout(saveTimer); saveTimer = setTimeout(persist, 300); }
+});
+
+$app.addEventListener('change', function (e) {
+  if (!e.target.dataset || e.target.dataset.act !== 'addPhoto') return;
+  var files = Array.prototype.slice.call(e.target.files || [], 0, 6 - db.draft.photos.length);
+  if (!files.length) return;
+  Promise.all(files.map(function (f) { return compress(f).catch(function () { return null; }); })).then(function (urls) {
+    var ok = urls.filter(Boolean);
+    ok.forEach(function (u) { if (db.draft.photos.length < 6) db.draft.photos.push(u); });
+    if (!persist()) { db.draft.photos.splice(db.draft.photos.length - ok.length, ok.length); flash('Your phone is out of space for photos — try fewer or smaller ones.'); return; }
+    if (ok.length < urls.length) flash('One photo didn’t open — a JPG or PNG works best.');
+    else render();
+  });
+});
+
+function compress(file) {
+  return new Promise(function (resolve, reject) {
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function () {
+      var max = 900, s = Math.min(1, max / Math.max(img.width, img.height));
+      var c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL('image/jpeg', 0.75));
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); reject(); };
+    img.src = url;
+  });
+}
+
+// flush a pending debounced save if the page is closed mid-typing
+window.addEventListener('pagehide', function () { if (saveTimer) { clearTimeout(saveTimer); persist(); } });
+
+/* live timers: update text only, no re-render */
+setInterval(function () {
+  var now = Date.now();
+  $app.querySelectorAll('[data-at]').forEach(function (el) { el.textContent = fmtElapsed(now - +el.dataset.at); });
+}, 1000);
+
+/* ---------------- splash ---------------- */
+
+var introTimers = [];
+function runIntro() {
+  introTimers.forEach(clearTimeout); introTimers = [];
+  var old = document.getElementById('splash'); if (old) old.remove();
+  ui.phase = 'spin'; ui.screen = 'home'; ui.stack = []; ui.sheet = '';
+  render();
+  var s = document.createElement('div');
+  s.id = 'splash';
+  s.setAttribute('aria-hidden', 'true');
+  s.style.cssText = 'position:absolute;inset:0;background:#0E4D4A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:30';
+  s.innerHTML = '<span class="bk-logo" style="display:flex">' + logo(120, true) + '</span>' +
+    '<div class="bk-word" style="font-family:var(--display);font-weight:800;font-size:44px;letter-spacing:2px;color:#F6F1E7">DAWAT</div>' +
+    '<div class="bk-tag" style="font-size:14px;font-weight:500;color:#CFE3DF;letter-spacing:.2px">Nothing hits like home.</div>';
+  document.getElementById('phone').appendChild(s);
+  introTimers.push(setTimeout(function () { ui.phase = 'out'; s.classList.add('bk-splash-out'); ui.anim = 'in'; render(); }, 2100));
+  introTimers.push(setTimeout(function () { ui.phase = 'home'; s.remove(); }, 2650));
+}
+
+/* fit the phone frame to desktop windows */
+function fit() {
+  var ph = document.getElementById('phone');
+  // a host that pads the page root for the notch already clears it; don't add the inset twice
+  var cs = getComputedStyle(document.documentElement);
+  if ((parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0) > 0) document.documentElement.classList.add('hosted');
+  if (window.innerWidth <= 520) { ph.style.transform = ''; return; }
+  var s = Math.min(1, (window.innerHeight - 48) / 864, (window.innerWidth - 48) / 410);
+  ph.style.transform = s < 1 ? 'scale(' + s + ')' : '';
+}
+window.addEventListener('resize', fit);
+fit();
+runIntro();
+</script>
+</body>
+</html>
